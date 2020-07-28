@@ -1,0 +1,65 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:fragment="myheader">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>EMS</title>
+<meta name="description"
+      content="Lead Smith - Maintain Excel Files Record">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="apple-touch-icon" href="apple-icon.png">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="stylesheet" th:href="@{/assets/css/bootstrap-datepicker3.css}">
+<link rel="stylesheet" th:href="@{/assets/css/normalize.css}">
+<link rel="stylesheet"  th:href="@{/assets/css/bootstrap.min.css}">
+<link rel="stylesheet"  th:href="@{/assets/css/font-awesome.min.css}">
+<link rel="stylesheet" th:href="@{/assets/css/themify-icons.css}">
+<link rel="stylesheet" th:href="@{/assets/css/flag-icon.min.css}">
+<link rel="stylesheet"  th:href="@{/assets/css/cs-skin-elastic.css}">
+<link rel="stylesheet" th:href="@{/assets/css/lib/datatable/dataTables.bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/bootstrap-fileinput/bootstrap-fileinput.css}">
+<link rel="stylesheet" th:href="@{/assets/scss/style.css}">
+<link th:href="@{/assets/css/lib/vector-map/jqvmap.min.css}" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/assets/css/lib/chosen/chosen.min.css}">
+
+<!-- CSS -->
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/alertify.min.css" />
+<!-- Default theme -->
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/themes/default.min.css" />
+<!-- Semantic UI theme -->
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/themes/semantic.min.css" />
+<!-- Bootstrap theme -->
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/themes/bootstrap.min.css" />
+<link
+        href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800'
+        rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="/assets/css/custom.css">
+<style>
+    td.details-control {
+        background: url('images/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.shown td.details-control {
+        background: url('images/details_close.png') no-repeat center center;
+    }
+
+    .btn-logout {
+        background: white;
+        border: none;
+        color: black;
+        padding: 4px 16px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
+</div>
+</body>
+</html>

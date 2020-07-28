@@ -1,0 +1,164 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <style> .hidden {
+        display: none !important;
+        visibility: hidden !important;
+    }</style>
+
+    <div th:replace="header :: myheader"></div>
+</head>
+<body>
+<aside id="left-panel" class="left-panel">
+    <div th:replace="aside :: myMenu"></div>
+</aside>
+<div id="right-panel" class="right-panel">
+    <header id="header" class="header">
+        <div class="header-menu">
+            <div class="col-sm-7">
+                <a id="menuToggle" class="menutoggle pull-left"><i
+                        class="fa fa fa-tasks"></i></a>
+            </div>
+            <a class="btn-logout pull-right" th:href="@{/logout}">
+                <i class="fa fa-sign-out"></i> Logout
+            </a>
+        </div>
+    </header>
+    <div class="content mt-3">
+        <div class="col-lg-12">
+            <div class="card">
+                <form th:action="@{/food/payment/save}" method="POST" autocomplete="off" th:object="${foodPayment}">
+                    <input type="hidden" th:field="*{id}"/>
+                    <div class="card-header">
+                        <small>Add </small>Food Payment
+                    </div>
+                    <div class="card-body card-block">
+                        <div class="form-row">
+
+                            <div class="col-md-4">
+                                <label >From Date<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control readonly" id="fromDate" name="fromDate" th:field="*{fromDate}"
+                                       onchange="calculateDays();calculateTotalAmount()" readonly/>
+                            </div>
+                            <div class="col-md-4">
+                                <label >To Period<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control readonly" id="toDate" name="toDate" th:field="*{toDate}"
+                                       onchange="calculateDays();calculateTotalAmount()" readonly/>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4">
+                                <label >Total Days <span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" name="totalDays" id="totalDays" th:field="*{totalDays}" onchange="calculateTotalAmount()"
+                                       placeholder="Total Days"  required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label >Per Day Charges<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" th:name="amount" id="amount" onchange="calculateTotalAmount()"
+                                       placeholder="Amount" th:value="400.0" onkeypress="return isNumber(event)" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label >Total Amount </label>
+                                <input type="text" class="form-control" name="totalAmount" th:field="*{totalAmount}"
+                                    placeholder="Total Amount" readonly  required onkeypress="return isNumber(event)">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label>Employee</label>
+                                <select class="form-control" name = "employeeType" id="employeeList" th:field="*{employees}" multiple="multiple" >
+                                    <option th:each="part : ${employeeList}"
+                                            th:value="${{part.id}}"
+                                            th:text="${part.firstName} + ' '+  ${part.lastName}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>All Select</label>
+                                <br>
+                                <input type="checkbox" value="allEmployee" name="allEmployee" id="allEmployee" onchange="checkAllEmployee()"/>
+                                <label>All Employees</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-sm"
+                                id="submit-btn">
+                            <i class="fa fa-dot-circle-o"></i> Submit
+                        </button>
+                        <button type="reset" class="btn btn-danger btn-sm" id="reset">
+                            <i class="fa fa-ban"></i> Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <div th:replace="footer :: myfooter"></div>
+</footer>
+<script src="/Utility/util.js"></script>
+<script src="/assets/bootstrap-fileinput/bootstrap-fileinput.js"
+        type="text/javascript"></script>
+
+<script>
+    $(".readonly").on('keydown paste', function(e){
+        e.preventDefault();
+    });
+    $('#fromDate').datepicker({
+        format : 'dd-mm-yyyy',
+        autoclose : true
+    });
+    $('#fromDate').datepicker();
+
+    $('#toDate').datepicker({
+        format : 'dd-mm-yyyy',
+        autoclose : true
+    });
+    $('#toDate').datepicker();
+
+
+    function calculateTotalAmount(){
+        var totalDays = $('#totalDays').val();
+        var amount = $('#amount').val();
+        if(totalDays!=null && amount!=null){
+            $('#totalAmount').val(totalDays*amount);
+        }
+    }
+
+    function checkAllEmployee(){
+        if($('#allEmployee').is(':checked')) {
+            $('#employeeList option').prop('selected', true);
+        }
+        else{
+            $('#employeeList option').prop('selected', false);
+        }
+    }
+    function calculateDays() {
+        var date1 = $('#fromDate').val();
+        var date2 = $('#toDate').val();
+        if(date1!=null && date2!=null){
+            date1 = date1.split('-');
+            date2 = date2.split('-');
+            date1 = new Date(date1[1]+'-'+date1[0]+'-'+date1[2]);
+            date2 = new Date(date2[1]+'-'+date2[0]+'-'+date2[2]);
+            var Difference_In_Time = date2.getTime() - date1.getTime();
+            var Difference_In_Days = (Difference_In_Time / (1000 * 3600 * 24))+1;
+            $('#totalDays').val(Difference_In_Days);
+        }
+    }
+
+
+
+
+</script>
+</body>
+</html>
+

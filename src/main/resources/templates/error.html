@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Error page</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
+    <style>
+        .error{
+            color:red;
+        }
+    </style>
+</head>
+<body th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">
+<h1 class="error" th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>
+<p>Message : </p>
+<p th:text="${exception}" class="error"></p>
+<p th:text="${message}" class="error"></p>
+
+<p >Failed Url : </p><p th:text="${url}"></p>
+<a href="index.html" th:href="@{/employee/list}">Back to Home Page</a>
+</body>
+</html>

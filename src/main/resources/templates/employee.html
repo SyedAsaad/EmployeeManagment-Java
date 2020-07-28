@@ -1,0 +1,306 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <style> .hidden {
+        display: none !important;
+        visibility: hidden !important;
+    }</style>
+
+    <div th:replace="header :: myheader"></div>
+</head>
+<body>
+<aside id="left-panel" class="left-panel">
+    <div th:replace="aside :: myMenu"></div>
+</aside>
+<div id="right-panel" class="right-panel">
+    <header id="header" class="header">
+        <div class="header-menu">
+            <div class="col-sm-7">
+                <a id="menuToggle" class="menutoggle pull-left"><i
+                        class="fa fa fa-tasks"></i></a>
+            </div>
+            <a class="btn-logout pull-right" th:href="@{/logout}">
+                <i class="fa fa-sign-out"></i> Logout
+            </a>
+        </div>
+    </header>
+    <div class="content mt-3">
+        <div class="col-lg-12">
+            <div class="card">
+                <form th:action="@{/employee/save}" method="POST" autocomplete="off" th:object="${employee}">
+                    <input type="hidden" th:field="*{id}"/>
+                    <div class="card-header">
+                        <small>Add </small>Employee
+                    </div>
+                    <div class="card-body card-block">
+                        <div class="form-row">
+                            <div class="col-md-6" th:if="${id}">
+                                <label >Employee Number<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" name="empId" th:field="*{empId}" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label >Employee Type <span style="color: red;"><b>*</b></span></label>
+                                <select name="employeeType"  id="employeeType"  th:field="*{employeeType}" class="form-control" onchange="requiredType()"  required>
+                                    <option value="">Select Employee Type</option>
+                                    <option th:each="type : ${employeeTypes}"
+                                            th:value="${type.key}" th:utext="${type.value}"></option>  </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label >First Name<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" name="firstName" th:field="*{firstName}"
+                                       placeholder="First Name"  required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label >Last Name <span style="color: red;"><b>*</b></span></label> <input
+                                    type="text" class="form-control" name="lastName" th:field="*{lastName}"
+                                    placeholder="Last Name"  required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="form-control-label">Joining Date <span style="color: red;"><b>*</b></span> </label>
+                                <input type="text"
+                                       class="form-control" name="joiningDate" id="joiningDate" th:field="*{joiningDate}" required>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class=" form-control-label">Job Title<span style="color: red;"><b>*</b></span></label>
+                                <input type="text"
+                                       class="form-control" name="jobTitle" id="jobTitle" th:field="*{jobTitle}" placeholder="Job Title" required>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="form-control-label">Date Of Birth <span style="color: red;"><b>*</b></span> </label>
+                                <input type="text"
+                                       class="form-control" name="dob" id="dob" th:field="*{dob}" required>
+                            </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class=" form-control-label">Phone Number <span style="color: red;"><b>*</b></span></label>
+                                <input type="text"
+                                       class="form-control" name="phoneNumber" id="phoneNumber" th:field="*{phoneNumber}" onkeypress="return isNumber(event)" maxlength="13"  placeholder="Phone Number">
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="form-control-label">CNIC <span style="color: red;"><b>*</b></span> </label>
+
+                            <input type="text"
+                                   class="form-control" name="cnic" id="cnic" th:field="*{cnic}"
+                                   data-inputmask="'mask': '99999-9999999-9'"
+                                   onkeypress="return isNumber(event)" required>
+                        </div>
+                            <div class="form-group col-md-6">
+                                <label>CNIC Expiry Date  <span style="color: red;"><b>*</b></span></label>
+                                <input type="text"
+                                       class="form-control" name="cnicExpiryDate" id="cnicExpiryDate" th:field="*{cnicExpiryDate}" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label>Country <span style="color: red;"><b>*</b></span></label>
+                                <select class="form-control" id="country" name="country" th:field="*{country}" required>
+                                    <option value="Pakistan" selected>Pakistan</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label >State<span style="color: red;"><b>*</b></span></label>
+                                <select class="form-control" id="state" name="state" th:field="*{state}" required>
+                                    <option value="">Select States</option>
+                                <option th:each="item : ${states}"
+                                        th:value="${item}"
+                                        th:text="${item}"></option>  </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label >City <span style="color: red;"><b>*</b></span></label>
+                                <select class="standardSelect form-control" id="city" name="city" th:field="*{city}" required>
+                                    <option value="">Select City</option>
+                                <option th:each="item : ${cities}"
+                                        th:value="${item}"
+                                        th:text="${item}"></option>  </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label>Address 1<span style="color: red;"><b>*</b></span></label>
+                                <input type="text" class="form-control" name="address"
+                                       th:field="*{address}" placeholder="Address" required>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label>Address 2</label>
+                                <input type="text" class="form-control" name="alternateAddress"
+                                       th:field="*{alternateAddress}" placeholder="Address" >
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label>Vehicle Type</label>
+                                <select class="form-control driverType" id="vehicleType" name="vehicleType" th:field="*{vehicleType}">
+                                    <option value="">Select Vehicle Type</option>
+                                    <option th:each="item : ${vehicleTypes}"
+                                            th:value="${item.key}"
+                                            th:text="${item.value}"></option>  </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Salary</label> <input
+                                    type="text" class="form-control" name="salary" id="salary"
+                                    th:field="*{salary}"
+                                    placeholder="Salary" onkeypress="return isNumber(event)"  required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label >License Number</label>
+                                <input type="text" class="form-control driverType" name="licenseNumber"
+                                    th:field="*{licenseNumber}">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>License Class</label>
+                                <select class="form-control driverType" id="licenseClass" name="licenseClass" th:field="*{licenseClass}" >
+                                    <option value="">Select Class</option>
+                                    <option th:each="item : ${licenseClass}"
+                                            th:value="${item.key}"
+                                            th:text="${item.value}"></option>   </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>License Expiry</label>
+                                <input  type="text" class="form-control driverType" name="licenseExpiryDate"
+                                    th:field="*{licenseExpiryDate}">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label >License Location</label>
+                                <select class="form-control" id="licenseLocation" name="licenseLocation" th:field="*{licenseLocation}">
+                                    <option value="">Select Location</option>
+                                    <option th:each="item : ${states}"
+                                            th:value="${item}"
+                                            th:text="${item}"></option>  </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-9">
+                                <label>Remarks</label> <input
+                                    type="text" class="form-control" name="remarks"
+                                    th:field="*{remarks}">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Job Status<span style="color: red;"><b>*</b></span></label>
+                                <select class="form-control driverType" id="licenseClass" name="jobStatus" th:field="*{jobStatus}" required>
+                                    <option value="">Select Status</option>
+                                    <option th:each="item : ${jobStatus}"
+                                            th:value="${item.key}"
+                                            th:text="${item.value}"></option>  </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Verified Employee</label>
+                                <select class="form-control driverType" id="verifiedType" name="verifiedType" th:field="*{verifiedType}">
+                                    <option value="">Select Verified Type</option>
+                                    <option th:each="item : ${verifiedTypes}"
+                                            th:value="${item.key}"
+                                            th:text="${item.value}"></option>  </select>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-sm"
+                                id="submit-btn" sec:authorize="hasAuthority('ADMIN')">
+                            <i class="fa fa-dot-circle-o"></i> Submit
+                        </button>
+                        <button type="reset" class="btn btn-danger btn-sm" id="reset">
+                            <i class="fa fa-ban"></i> Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <div th:replace="footer :: myfooter"></div>
+</footer>
+<script src="/Utility/util.js"></script>
+<script src="/assets/bootstrap-fileinput/bootstrap-fileinput.js"
+        type="text/javascript"></script>
+
+<script>
+
+    $(".readonly").on('keydown paste', function(e){
+        e.preventDefault();
+    });
+
+    $(":input").inputmask();
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+
+    $('#dob').datepicker({
+        format : 'dd-mm-yyyy',
+        autoclose : true
+    });
+    $('#dob').datepicker();
+
+    $('#joiningDate').datepicker({
+        format : 'dd-mm-yyyy',
+        autoclose : true
+    });
+    $('#joiningDate').datepicker();
+
+    $('#cnicExpiryDate').datepicker({
+        format : 'dd-mm-yyyy',
+        autoclose : true
+    });
+    $('#cnicExpiryDate').datepicker();
+
+    $('#licenseExpiryDate').datepicker({
+        format : 'dd-mm-yyyy',
+        autoclose : true
+    });
+    $('#licenseExpiryDate').datepicker();
+
+
+    $(document).ready(function(){
+        var e = document.getElementById("employeeType");
+        var selectIndex = e.options[e.selectedIndex].value;
+        if(selectIndex!=0){
+            $('.driverType').removeAttr("required");
+            $("#licenseExpiryDate").removeAttr("required");
+        }
+    });
+
+    function requiredType(){
+        var e = document.getElementById("employeeType");
+        var selectIndex = e.options[e.selectedIndex].value;
+        if(selectIndex==0){
+            $('.driverType').attr('required',true);
+            $('#licenseExpiryDate').attr('required',true);
+        }else{
+            $('.driverType').removeAttr("required");
+            $("#licenseExpiryDate").removeAttr("required");
+        }
+    }
+
+</script>
+</body>
+</html>
+

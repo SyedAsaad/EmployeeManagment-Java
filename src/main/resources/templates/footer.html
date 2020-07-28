@@ -1,0 +1,77 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:fragment="myfooter">
+    <script th:src="@{/assets/js/vendor/jquery-2.1.4.min.js}"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+    <script th:src="@{/assets/js/plugins.js}"></script>
+    <script th:src="@{/assets/js/main.js}"></script>
+    <script th:src="@{/assets/js/dashboard.js}"></script>
+    <script th:src="@{/assets/js/lib/data-table/datatables.min.js}"></script>
+    <script th:src="@{/assets/js/lib/data-table/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/assets/js/lib/data-table/dataTables.buttons.min.js}"></script>
+    <script th:src="@{/assets/js/lib/data-table/buttons.bootstrap.min.js}"></script>
+    <script th:src="@{/assets/js/lib/data-table/jszip.min.js}"></script>
+    <script th:src="@{/assets/js/lib/data-table/pdfmake.min.js}"></script>
+    <script th:src="@{/assets/js/lib/data-table/vfs_fonts.js}"></script>
+    <script th:src="@{/assets/js/lib/data-table/buttons.html5.min.js}"></script>
+    <script th:src="@{/assets/js/lib/data-table/buttons.print.min.js}"></script>
+    <script th:src="@{/assets/js/lib/data-table/buttons.colVis.min.js}"></script>
+    <script th:src="@{/assets/js/lib/data-table/datatables-init.js}"></script>
+    <script th:src="@{/assets/js/lib/bootstrap-datepicker.js}"></script>
+    <script th:src="@{/assets/js/lib/bootstrap-datepicker.de.min.js}"></script>
+    <script th:src="@{/assets/js/lib/jquery.inputmask.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/lib/chosen/chosen.jquery.min.js}"></script>
+    <script
+            src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/alertify.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
+    <script>
+        jQuery(document).ready(function() {
+            jQuery(".standardSelect").chosen({
+                disable_search_threshold : 3,
+                no_results_text : "Oops, nothing found!",
+                width : "100%"
+            });
+        });
+
+        $('a[href*="#"]')
+        // Remove links that don't actually link to anything
+            .not('[href="#"]').not('[href="#0"]').click(
+            function(event) {
+                // On-page links
+                if (location.pathname.replace(/^\//, '') == this.pathname
+                        .replace(/^\//, '')
+                    && location.hostname == this.hostname) {
+                    // Figure out element to scroll to
+                    var target = $(this.hash);
+                    target = target.length ? target : $('[name='
+                        + this.hash.slice(1) + ']');
+                    // Does a scroll target exist?
+                    if (target.length) {
+                        // Only prevent default if animation is actually gonna happen
+                        event.preventDefault();
+                        $('html, body').animate({
+                            scrollTop : target.offset().top
+                        }, 1000, function() {
+                            // Callback after animation
+                            // Must change focus!
+                            var $target = $(target);
+                            $target.focus();
+                            if ($target.is(":focus")) { // Checking if the target was focused
+                                return false;
+                            } else {
+                                $target.attr('tabindex', '-1'); // Adding tabindex for elements not focusable
+                                $target.focus(); // Set focus again
+                            }
+                            ;
+                        });
+                    }
+                }
+            });
+    </script>
+</div>
+</body>
+</html>
