@@ -1,6 +1,5 @@
 package com.logex.demo.service;
 
-import com.logex.demo.config.Queries;
 import com.logex.demo.config.UtilService;
 import com.logex.demo.config.exception.DuplicateRecordException;
 import com.logex.demo.config.exception.RecordNotFoundException;
@@ -23,13 +22,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -164,12 +164,16 @@ public class EmployeeService {
     public ByteArrayInputStream exportReport(HttpServletRequest request, HttpServletResponse response) {
 
         String[] employeeTypeList=request.getParameterValues("employeeType");
+        Boolean notTerminatedEmp =  request.getParameter("terminatedEmployee")!=null ? Boolean.TRUE : Boolean.FALSE;
 
         List<Employee> data = new ArrayList<>();
         if(employeeTypeList==null)
             data = findAll();
         else if(employeeTypeList.length>0)
             data = employeeRepository.getAllByEmployeeTypeList(Arrays.stream(employeeTypeList).map(emp->Integer.parseInt(emp)).collect(Collectors.toList()));
+
+        if(notTerminatedEmp.equals(Boolean.TRUE))
+           data =  data.stream().filter(employee -> employee.getTerminationDetails()==null).collect(Collectors.toList());
 
        return exportExcel(data,"Employee");
     }
@@ -208,7 +212,7 @@ public class EmployeeService {
                 row.createCell(columnCount++).setCellValue(UtilService.isValid(emp.getRemarks()));
                 row.createCell(columnCount++).setCellValue(emp.getJobStatus()!=null ? emp.getJobStatus().getTitle():"-");
                 row.createCell(columnCount++).setCellValue(emp.getVerifiedType()!=null ? emp.getVerifiedType().getTitle() : "-");
-                row.createCell(columnCount++).setCellValue(emp.getTerminationDetails()!=null ? "TRUE" : "FALSE");
+                row.createCell(columnCount++).setCellValue(emp.getTerminationDetails()!=null ? "YES" : "NO");
             }
 
             for (int i = 0; i < columnName.length; i++) {
@@ -239,6 +243,7 @@ public class EmployeeService {
         try {
             Employee employee=findById(empId);
             if(employee!=null){
+                termination.setEmployee(employee);
                 terminationRepository.save(termination);
                 employee.setTerminationDetails(termination);
                 employeeRepository.save(employee);

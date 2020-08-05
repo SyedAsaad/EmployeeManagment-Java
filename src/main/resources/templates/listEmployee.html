@@ -39,7 +39,11 @@
                                     </option>
                                 </select>
                             </div>
-<!--                            <div class="form-group col-md-4">-->
+                            <div class="form-group col-md-4">
+                                <label>Select :</label>
+                                <br>
+                                <input type="checkbox" value="terminatedEmployee" name="terminatedEmployee" id="terminatedEmployee"/>
+                                <label>Not Terminated Employees ? </label>
 <!--                                <label>Job Status</label>-->
 <!--                                <select class="form-control" name="jobStatus" multiple="multiple" >-->
 <!--                                    <option th:each="part : ${jobStatuses}"-->
@@ -47,13 +51,13 @@
 <!--                                            th:text="${part.value}">-->
 <!--                                    </option>-->
 <!--                                </select>-->
-<!--                            </div>-->
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary btn-sm"
                                 id="submit-btn">
-                            <i class="fa fa-dot-circle-o"></i> Export Excel
+                            <i class="fa fa-download"></i> Export Excel
                         </button>
                         <button type="reset" class="btn btn-danger btn-sm" id="reset">
                             <i class="fa fa-ban"></i> Reset
@@ -93,8 +97,34 @@
                                 <td th:text="${employee.jobStatus}!=null ? ${employee.jobStatus.title} : '-'"></td>
                                 <td th:text="${employee.terminationDetails}!=null ? 'YES' : 'NO'"></td>
                                 <td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/employee/terminate/{id}/(id=${employee.id})}" th:if="!${employee.terminationDetails}"  class="btn btn-danger btn-sm">Terminate</a></td>
-                                <td sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/employee/delete/{id}(id=${employee.id})}" class="btn btn-danger btn-sm">Delete</a></td>
-                                <td><a th:href="@{/employee/edit/{id}(id=${employee.id})}" class="btn btn-danger btn-sm">Edit</a></td>
+                                <td sec:authorize="hasAuthority('ADMIN')"><a type="button" data-toggle="modal" th:attr="data-target='#myModal'+${employee.id}" class="btn btn-danger btn-sm">Delete</a></td>
+                                <td><a th:href="@{/employee/edit/{id}(id=${employee.id})}" class="btn btn-info btn-sm">Edit</a></td>
+                                <!-- The Modal -->
+                                <div class="modal fade"  th:attr="id='myModal'+${employee.id}" tabindex="-1" role="dialog" aria-labelledby="recordDeleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Delete Employee</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete record ?
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                        data-dismiss="modal">No</button>
+                                                <!--                                                th:attr="id='/employee/delete/{id}(id=${employee.id})"-->
+                                                <a th:attr="href='/employee/delete/'+${employee.id}" ><button
+                                                        type="button" class="btn btn-success">Yes</button></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal end -->
+
                             </tr>
                             </tbody>
                         </table>

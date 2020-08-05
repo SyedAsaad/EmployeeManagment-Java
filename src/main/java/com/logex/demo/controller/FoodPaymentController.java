@@ -41,12 +41,13 @@ public class FoodPaymentController {
     @GetMapping(value = "/list")
     private ModelAndView getAllEmployee(){
         ModelAndView modelAndView = new ModelAndView("listFoodPaymentLog");
-        modelAndView.addObject("foodPayments", foodPaymentService.findAll());
+//        modelAndView.addObject("foodPayments", foodPaymentService.findAll());
         return modelAndView;
     }
 
-    @PostMapping(value = "/export")
-    private void exportEmployee(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    @PostMapping(value = URLConstants.EXPORT_REPORT,  params="action=excel")
+    private void exportReport(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         response.setContentType("application/octet-stream");
         String filename = "foodPayment-"+new Date().getTime()+".xlsx";
@@ -54,6 +55,14 @@ public class FoodPaymentController {
         ByteArrayInputStream stream = foodPaymentService.exportReport(request,response);
         IOUtils.copy(stream, response.getOutputStream());
     }
+
+    @PostMapping(value = URLConstants.EXPORT_REPORT,  params="action=search")
+    private ModelAndView exportReport(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView("listFoodPaymentLog");
+        modelAndView.addObject("foodPayments", foodPaymentService.searchFoodPayment(request));
+        return modelAndView;
+    }
+
 
     @PostMapping(value = URLConstants.SAVE_URL)
     private String saveFoodPayment(@ModelAttribute FoodPaymentDto foodPaymentDto){

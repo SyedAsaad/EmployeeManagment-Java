@@ -165,43 +165,7 @@ public class FoodPaymentService {
 
     public ByteArrayInputStream exportReport(HttpServletRequest request, HttpServletResponse response) {
 
-        StringBuilder criteria = new StringBuilder();
-        int parameterNo = 1;
-        Map<Integer,Object> parameters = new LinkedHashMap<>();
-
-        if(request.getParameter("fromDate") != null && !request.getParameter("fromDate").toString().isEmpty() && request.getParameter("toDate") != null && !request.getParameter("toDate").toString().isEmpty()){
-            criteria.append(" AND STR_TO_DATE(a.from_date,'%d-%m-%Y') >= STR_TO_DATE( ? ,'%d-%m-%Y')");
-            parameters.put(parameterNo,request.getParameter("fromDate"));
-            parameterNo++;
-            criteria.append(" AND STR_TO_DATE(a.to_date,'%d-%m-%Y') <= STR_TO_DATE( ? ,'%d-%m-%Y')");
-            parameters.put(parameterNo,request.getParameter("toDate"));
-            parameterNo++;
-        }
-
-        Query query = em.createNativeQuery(Queries.foodPaymentFilter.replace("criteria", criteria.toString()));
-        List<Object> results = UtilService.toParameterized(query,parameters,parameterNo).getResultList();
-        List<FoodPaymentDto> data = new ArrayList<>();
-
-        for(Object object: results){
-            int i = 0;
-            Object[] obj = (Object[])object;
-            FoodPaymentDto foodPaymentDto = new FoodPaymentDto();
-            foodPaymentDto.setFromDate(UtilService.isValid(obj[i++]));
-            foodPaymentDto.setToDate(UtilService.isValid(obj[i++]));
-            foodPaymentDto.setTotalDays(UtilService.isValid(obj[i++]));
-            foodPaymentDto.setTotalAmount((Double)obj[i++]);
-            foodPaymentDto.setAmount((Double) obj[i++]);
-            Employee employee = new Employee();
-            employee.setFirstName(UtilService.isValid(obj[i++]));
-            employee.setLastName(UtilService.isValid(obj[i++]));
-            employee.setCnic(UtilService.isValid(obj[i++]));
-            employee.setPhoneNumber(UtilService.isValid(obj[i++]));
-            employee.setJobStatus((Integer)obj[i++]);
-            foodPaymentDto.setEmployee(employee);
-            data.add(foodPaymentDto);
-
-
-        }
+        List<FoodPaymentDto> data = searchFoodPayment(request);
         return exportExcel(data,"Employee");
     }
 
@@ -244,4 +208,46 @@ public class FoodPaymentService {
 
     }
 
+    public List<FoodPaymentDto> searchFoodPayment(HttpServletRequest request) {
+        StringBuilder criteria = new StringBuilder();
+        int parameterNo = 1;
+        Map<Integer,Object> parameters = new LinkedHashMap<>();
+
+        if(request.getParameter("fromDate") != null && !request.getParameter("fromDate").toString().isEmpty()) {
+            criteria.append(" AND STR_TO_DATE(a.from_date,'%d-%m-%Y') >= STR_TO_DATE( ? ,'%d-%m-%Y')");
+            parameters.put(parameterNo, request.getParameter("fromDate"));
+            parameterNo++;
+        }
+        if(request.getParameter("toDate") != null && !request.getParameter("toDate").toString().isEmpty()){
+            criteria.append(" AND STR_TO_DATE(a.to_date,'%d-%m-%Y') <= STR_TO_DATE( ? ,'%d-%m-%Y')");
+            parameters.put(parameterNo,request.getParameter("toDate"));
+            parameterNo++;
+        }
+
+        Query query = em.createNativeQuery(Queries.foodPaymentFilter.replace("criteria", criteria.toString()));
+        List<Object> results = UtilService.toParameterized(query,parameters,parameterNo).getResultList();
+        List<FoodPaymentDto> data = new ArrayList<>();
+
+        for(Object object: results){
+            int i = 0;
+            Object[] obj = (Object[])object;
+            FoodPaymentDto foodPaymentDto = new FoodPaymentDto();
+            foodPaymentDto.setFromDate(UtilService.isValid(obj[i++]));
+            foodPaymentDto.setToDate(UtilService.isValid(obj[i++]));
+            foodPaymentDto.setTotalDays(UtilService.isValid(obj[i++]));
+            foodPaymentDto.setTotalAmount((Double)obj[i++]);
+            foodPaymentDto.setAmount((Double) obj[i++]);
+            Employee employee = new Employee();
+            employee.setFirstName(UtilService.isValid(obj[i++]));
+            employee.setLastName(UtilService.isValid(obj[i++]));
+            employee.setCnic(UtilService.isValid(obj[i++]));
+            employee.setPhoneNumber(UtilService.isValid(obj[i++]));
+            employee.setJobStatus((Integer)obj[i++]);
+            foodPaymentDto.setEmployee(employee);
+            data.add(foodPaymentDto);
+
+
+        }
+        return data;
+    }
 }

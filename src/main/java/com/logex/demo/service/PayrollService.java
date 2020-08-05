@@ -79,8 +79,7 @@ public class PayrollService {
     public void delete(Long id) {
         PayRoll payroll=findOne(id);
         if(payroll!=null){
-            payroll.setIsDeleted(Boolean.TRUE);
-            payrollRepository.save(payroll);
+          payrollRepository.delete(payroll);
         }
     }
 

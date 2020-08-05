@@ -34,8 +34,8 @@ public class Employee extends BaseEntity {
     private VehicleType vehicleType;
     private String remarks;
 
-    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.REMOVE,
+            fetch = FetchType.LAZY, optional = true)
     private Termination terminationDetails;
 
     //Getters and setters omitted for brevity
@@ -52,9 +52,7 @@ public class Employee extends BaseEntity {
         this.terminationDetails = details;
     }
 
-    public Termination getTerminationDetails() {
-        return terminationDetails;
-    }
+    public Termination getTerminationDetails() {     return terminationDetails;}
 
     public void setTerminationDetails(Termination terminationDetails) {
         this.terminationDetails = terminationDetails;

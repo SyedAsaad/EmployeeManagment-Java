@@ -23,7 +23,7 @@
     <div class="content mt-3">
         <div class="col-lg-12">
             <div class="card">
-                <form th:action="@{/payroll/report/export}" method="post">
+                <form th:action="@{/payroll/report/export}" autocomplete="off" method="post">
 
                     <div class="card-header">
                         <small>Payroll List </small>
@@ -50,9 +50,9 @@
                                 id="submit-btn">
                             <i class="fa fa-dot-circle-o"></i> Search
                         </button>
-                        <button type="submit" class="btn btn-primary btn-sm" value="excel" name="action"
+                        <button type="submit" class="btn btn-success btn-sm" value="excel" name="action"
                                 id="excelBtn">
-                            <i class="fa fa-dot-circle-o"></i> Export Excel
+                            <i class="fa fa-download"></i> Export Excel
                         </button>
 
                         <button type="reset" class="btn btn-danger btn-sm" id="reset">
@@ -86,8 +86,32 @@
                                 <td th:text="${payroll.employee.cnic}"></td>
                                 <td th:text="${payroll.monthYear}!=null ?${payroll.monthYear} : '-' "></td>
                                 <td th:text="${payroll.totalDays}!=null ? ${payroll.totalDays} : '-' "></td>
-                                <td><a th:href="@{/payroll/delete/{id}(id=${payroll.id})}" class="btn btn-danger btn-sm">Delete</a></td>
+                                <td><a data-toggle="modal" th:attr="data-target='#myModal'+${payroll.id}" class="btn btn-danger btn-sm">Delete</a></td>
 <!--                                <td><a th:href="@{/employee/edit/{id}(id=${employee.id})}" class="btn btn-danger btn-sm">Edit</a></td>-->
+                                <!-- The Modal -->
+                                <div class="modal fade"  th:attr="id='myModal'+${payroll.id}" tabindex="-1" role="dialog" aria-labelledby="recordDeleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Delete Employee</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete record ?
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                        data-dismiss="modal">No</button>
+                                                <a th:attr="href='/payroll/delete/'+${payroll.id}" ><button
+                                                        type="button" class="btn btn-success">Yes</button></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal end -->
                             </tr>
                             </tbody>
                         </table>
