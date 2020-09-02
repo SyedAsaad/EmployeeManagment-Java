@@ -142,6 +142,7 @@ public final class Utils {
     private static final String[] STATES = {
             "AJK",
             "Balochistan",
+            "Gilgit Baltistan",
             "Kashmir",
             "KPK",
             "Punjab",

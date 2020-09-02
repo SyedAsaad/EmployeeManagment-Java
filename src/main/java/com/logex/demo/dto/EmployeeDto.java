@@ -10,6 +10,7 @@ public class EmployeeDto {
     private String firstName;
     @NotNull(message = "Last name cannot be null")
     private String lastName;
+    private String fatherName;
     @NotNull(message = "Address cannot be null")
     private String address;
     private String alternateAddress;
@@ -33,6 +34,14 @@ public class EmployeeDto {
     private Integer vehicleType;
     private String remarks;
     private Boolean isTerminated;
+
+    public String getFatherName() {
+        return fatherName;
+    }
+
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
+    }
 
     public String getEmpId() {
         return empId;

@@ -47,7 +47,7 @@ public class EmployeeService {
     @PersistenceContext
     public EntityManager em;
 
-    private static String[] columnName = { "First Name", "Last Name","Date Of Joining","Date Of Birth","Cnic","Cnic Expiry Date",
+    private static String[] columnName = { "First Name", "Last Name","Father Name","Date Of Joining","Date Of Birth","Cnic","Cnic Expiry Date",
             "License Num","License Class","License Expiry Date","License Location" ,"Salary","City","State","Country","Phone Num",
             "Employee Type","Address","Remarks","Job Status","Verified Type","Is Terminated?"};
 
@@ -71,6 +71,7 @@ public class EmployeeService {
                     existEmployee.setEmpId(employeeDto.getEmpId() != null ? employeeDto.getEmpId() : generateEmpId());
                     existEmployee.setFirstName(employeeDto.getFirstName());
                     existEmployee.setLastName(employeeDto.getLastName());
+                    existEmployee.setFatherName(employeeDto.getFatherName());
                     existEmployee.setPhoneNumber(employeeDto.getPhoneNumber());
                     existEmployee.setCnic(employeeDto.getCnic());
                     existEmployee.setCnicExpiryDate(employeeDto.getCnicExpiryDate());
@@ -193,6 +194,7 @@ public class EmployeeService {
 
                 row.createCell(columnCount++).setCellValue(emp.getFirstName());
                 row.createCell(columnCount++).setCellValue(emp.getLastName());
+                row.createCell(columnCount++).setCellValue(UtilService.isValid(emp.getFatherName()));
                 row.createCell(columnCount++).setCellValue(emp.getJoiningDate()!=null ? emp.getJoiningDate():"");
                 row.createCell(columnCount++).setCellValue(emp.getDob());
                 row.createCell(columnCount++).setCellValue(emp.getCnic());
