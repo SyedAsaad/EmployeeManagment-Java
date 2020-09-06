@@ -30,7 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(new RestAccessDeniedHandler())
                 .and().authorizeRequests()
                 .antMatchers("/","/login**","/logout","/userLogin").permitAll()
-                .antMatchers("/employee").hasAnyAuthority("ADMIN")
+                .antMatchers("/employee").hasAnyAuthority("ADMIN",
+                "EMPLOYEE")
                 .anyRequest().authenticated()
 
                 .and().formLogin().loginPage("/login").failureUrl("/login?error=true")

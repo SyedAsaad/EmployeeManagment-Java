@@ -28,4 +28,7 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
 
     @Query(value = "Select * from employee p where is_deleted=0 and p.employee_type IN ?1",nativeQuery = true)
     List<Employee> getAllByEmployeeTypeList(List<Integer> list);
+
+    @Query("select employee from Employee employee join fetch employee.terminationDetails where employee.terminationDetails is not null")
+    List<Employee> getAllTerminatedEmployees();
 }

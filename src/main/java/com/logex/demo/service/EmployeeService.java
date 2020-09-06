@@ -133,6 +133,10 @@ public class EmployeeService {
         return employeeRepository.findByEmpIdAndIsDeletedFalse(id);
     }
 
+    public List<Employee> findAllTerminatedEmployees(){
+       return employeeRepository.getAllTerminatedEmployees();
+    }
+
     public ModelAndView addDependencies(ModelAndView modelAndView){
         modelAndView.addObject("jobStatus", JobStatus.keyValues);
         modelAndView.addObject("licenseClass", LicenseClass.keyValues);
@@ -255,5 +259,16 @@ public class EmployeeService {
             throw new ServiceException(e.getMessage(),e);
         }
 
+    }
+
+    public void unTerminateEmployee(Long empId){
+        try{
+            Employee employee = findById(empId);
+            if(employee!=null && employee.getTerminationDetails()!=null){
+                terminationRepository.delete(employee.getTerminationDetails());
+            }
+        }catch (Exception e){
+            throw new ServiceException(e.getMessage(),e);
+        }
     }
 }

@@ -160,11 +160,7 @@ public class UserService {
 
     public String login(AuthenticationRequestDto authenticationRequestDto, Model model) {
         if(authenticate(authenticationRequestDto)){
-            UserType role = findUserByUsername(authenticationRequestDto.getUsername()).getRole().getRoleName();
-            if(role.equals(UserType.ADMIN))
-                return "redirect:/employee";
-            else
-                return "redirect:/employee/list";
+                return "redirect:/dashboard";
         }
         else{
             model.addAttribute("loginError", true);

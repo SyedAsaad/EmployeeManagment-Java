@@ -99,5 +99,19 @@ public class EmployeeController {
         return modelAndView;
     }
 
+    @GetMapping(value = "/terminated")
+    private ModelAndView getTerminatedEmployee(){
+        ModelAndView modelAndView = new ModelAndView("terminatedEmployee");
+        modelAndView.addObject("employees",employeeService.findAllTerminatedEmployees());
+        employeeService.addDependencies(modelAndView);
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/terminate"+URLConstants.DELETE_URL)
+    private String deleteTermination(@PathVariable Long empId){
+        employeeService.unTerminateEmployee(empId);
+        return "redirect:/employee/terminated";
+    }
+
 
 }

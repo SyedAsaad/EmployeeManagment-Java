@@ -16,21 +16,22 @@
 
         <div id="main-menu" class="main-menu collapse navbar-collapse">
             <ul class="nav navbar-nav">
-<!--                <li class="active"><a href="#"> <i-->
-<!--                        class="menu-icon fa fa-dashboard"></i>Dashboard-->
-<!--                </a></li>-->
+                <li class="active"><a th:href="@{/dashboard}"> <i
+                        class="menu-icon fa fa-dashboard"></i>Dashboard
+                </a></li>
                 <h3 class="menu-title">Menu</h3>
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Management</a>
                     <ul class="sub-menu children dropdown-menu">
-<!--                        <li sec:authorize="hasAuthority('ADMIN')"><i  class="fa fa-table"></i><a  th:href="@{/shift}">User Shift</a></li>-->
-                        <li sec:authorize="hasAuthority('ADMIN')"><i class="fa fa-table"></i><a th:href="@{/registration}">Add User</a></li>
-                        <li sec:authorize="hasAuthority('ADMIN')"><i class="fa fa-table"></i><a th:href="@{/employee}">Add Employee</a></li>
+
+                        <li sec:authorize="hasAnyAuthority('ADMIN')"><i class="fa fa-table"></i><a th:href="@{/registration}">Add User</a></li>
+                        <li sec:authorize="hasAnyAuthority('ADMIN','EMPLOYEE')"><i class="fa fa-table"></i><a th:href="@{/employee}">Add Employee</a></li>
                         <li><i class="fa fa-table"></i><a th:href="@{/employee/list}">Employee List</a></li>
-                        <li sec:authorize="hasAuthority('ADMIN')"><i class="fa fa-table"></i><a th:href="@{/food/payment}">Add Food Payment</a></li>
+                        <li sec:authorize="hasAnyAuthority('ADMIN')"><i class="fa fa-table"></i><a th:href="@{/employee/terminated}">Terminated Employees</a></li>
+                        <li sec:authorize="hasAnyAuthority('ADMIN','EMPLOYEE')"><i class="fa fa-table"></i><a th:href="@{/food/payment}">Add Food Payment</a></li>
                         <li><i class="fa fa-table"></i><a th:href="@{/food/payment/list}">Food Payment List</a></li>
-                        <li sec:authorize="hasAuthority('ADMIN')"><i class="fa fa-table"></i><a th:href="@{/payroll}">Add PayRoll File</a></li>
-                        <li sec:authorize="hasAuthority('ADMIN')"><i class="fa fa-table"></i><a th:href="@{/payroll/report}">Payroll List</a></li>
+                        <li sec:authorize="hasAnyAuthority('ADMIN','EMPLOYEE')"><i class="fa fa-table"></i><a th:href="@{/payroll}">Add PayRoll File</a></li>
+                        <li sec:authorize="hasAnyAuthority('ADMIN','EMPLOYEE')"><i class="fa fa-table"></i><a th:href="@{/payroll/report}">Payroll List</a></li>
                     </ul>
                 </li>
             </ul>
