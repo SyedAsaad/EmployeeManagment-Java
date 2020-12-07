@@ -11,6 +11,7 @@ public class Employee extends BaseEntity {
     private String empId;
     private String firstName;
     private String lastName;
+    private String fatherName;
     private String address;
     private String alternateAddress;
     private String dob;
@@ -50,6 +51,15 @@ public class Employee extends BaseEntity {
             details.setEmployee(this);
         }
         this.terminationDetails = details;
+    }
+
+
+    public String getFatherName() {
+        return fatherName;
+    }
+
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
     }
 
     public Termination getTerminationDetails() {     return terminationDetails;}

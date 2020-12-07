@@ -58,6 +58,11 @@
                                     type="text" class="form-control" name="lastName" th:field="*{lastName}"
                                     placeholder="Last Name"  required>
                             </div>
+                            <div class="form-group col-md-6">
+                                <label >Father Name <span style="color: red;"><b>*</b></span></label> <input
+                                    type="text" class="form-control" name="fatherName" th:field="*{fatherName}"
+                                    placeholder="father Name" >
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -217,7 +222,7 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary btn-sm"
-                                id="submit-btn" sec:authorize="hasAuthority('ADMIN')">
+                                id="submit-btn" sec:authorize="hasAnyAuthority('ADMIN','EMPLOYEE')">
                             <i class="fa fa-dot-circle-o"></i> Submit
                         </button>
                         <button type="reset" class="btn btn-danger btn-sm" id="reset">

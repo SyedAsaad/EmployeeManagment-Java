@@ -21,8 +21,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @Autowired
-//    private EnumService enumService;
 
     @GetMapping(value = "/registration")
     private ModelAndView registrationView(){
@@ -30,6 +28,12 @@ public class UserController {
         m.addObject("user",new UserDto());
         m.addObject("roleList", UserType.keyValues);
         m.addObject("userList",userService.findAll());
+        return m;
+    }
+
+    @GetMapping(value = "/dashboard")
+    private ModelAndView dashboardView(){
+        ModelAndView m = new ModelAndView("dashboard");
         return m;
     }
 
